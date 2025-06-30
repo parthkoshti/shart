@@ -1,0 +1,36 @@
+{
+  "name": "shart",
+  "version": "1.0.0",
+  "description": "When your app crashes, it farts. That's it.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "farts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fart",
+    "crash",
+    "node",
+    "humor",
+    "funny"
+  ],
+  "author": "Parth Koshti",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.2",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "play-sound": "^1.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.7",
+    "@types/play-sound": "^1.1.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}
