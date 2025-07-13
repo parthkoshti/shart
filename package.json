@@ -1,6 +1,6 @@
 {
-  "name": "shart",
-  "version": "1.0.0",
+  "name": "shartjs",
+  "version": "1.0.1",
   "description": "When your app crashes, it farts. That's it.",
   "type": "module",
   "main": "dist/index.js",
@@ -11,12 +11,18 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsx test/test.ts",
+    "prepublish": "pnpm run build",
+    "release": "pnpm publish --access public"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "keywords": [
     "fart",
     "crash",
-    "node",
+    "error handling",
+    "crash handling",
     "humor",
     "funny"
   ],
