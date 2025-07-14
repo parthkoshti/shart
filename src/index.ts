@@ -48,10 +48,3 @@ export function initShart() {
     process.exit(1);
   });
 }
-
-function test() {
-  initShart();
-  throw new Error("Testing fart 💨");
-}
-
-test();
