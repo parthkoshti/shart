@@ -1,19 +1,23 @@
 {
   "name": "shartjs",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "When your app crashes, it farts. That's it.",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
   "files": [
     "dist",
     "farts"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsup",
     "test": "tsx test/test.ts",
-    "prepublish": "pnpm run build",
-    "release": "pnpm publish --access public"
+    "release": "pnpm run build && pnpm publish --access public"
   },
   "engines": {
     "node": ">=18"
@@ -31,11 +35,11 @@
   "packageManager": "pnpm@10.12.2",
   "dependencies": {
     "chalk": "^5.4.1",
-    "play-sound": "^1.1.6"
+    "execa": "^9.6.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.7",
-    "@types/play-sound": "^1.1.2",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }

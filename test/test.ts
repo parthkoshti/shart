@@ -1,9 +1,17 @@
-import { initShart } from "../dist/index.js";
+import { initShart } from "../src/index";
 
 initShart();
 
-function test() {
-  throw new Error("Testing fart 💨");
+async function test() {
+  // Trigger an uncaughtException
+  setTimeout(() => {
+    throw new Error("💥 Uncaught Exception: Shart incoming!");
+  }, 100);
+
+  // Trigger an unhandledRejection
+  setTimeout(() => {
+    Promise.reject(new Error("🤯 Unhandled Rejection: Prepare for blast"));
+  }, 200);
 }
 
-test();
+await test();

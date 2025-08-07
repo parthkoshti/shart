@@ -1,18 +1,46 @@
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import chalk from "chalk";
-import player from "play-sound";
+import { join } from "path";
 import { readdirSync } from "fs";
+import { platform } from "os";
+import chalk from "chalk";
+import { execa } from "execa";
+import { __dirnameSafe } from "./dirname";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+async function playSound(filePath: string) {
+  const os = platform();
 
-const fartPlayer = player();
+  try {
+    if (os === "darwin") {
+      await execa("afplay", [filePath]);
+    } else if (os === "win32") {
+      await execa("powershell", [
+        "-c",
+        `Start-Process -FilePath "${filePath}" -WindowStyle Hidden`,
+      ]);
+    } else {
+      // Try common Linux players in order
+      const players = ["paplay", "aplay", "mpg123", "mplayer", "play"];
+      let played = false;
 
-function playFart() {
-  const fartDir = join(__dirname, "..", "farts");
+      for (const cmd of players) {
+        try {
+          await execa(cmd, [filePath]);
+          played = true;
+          break;
+        } catch {}
+      }
 
-  // Read all .wav files from the directory
+      if (!played) {
+        console.error("🔇 No compatible audio player found.");
+      }
+    }
+  } catch (err) {
+    console.error("💩 Failed to play fart sound:", err);
+  }
+}
+
+async function playFart() {
+  const fartDir = join(__dirnameSafe, "..", "farts");
+
   const files = readdirSync(fartDir).filter((file) => file.endsWith(".wav"));
 
   if (files.length === 0) {
@@ -20,14 +48,10 @@ function playFart() {
     return;
   }
 
-  // Pick a random file
   const selected = files[Math.floor(Math.random() * files.length)];
   const fartPath = join(fartDir, selected);
 
-  // console.error(`🎺 Playing fart: ${selected}`);
-  fartPlayer.play(fartPath, (err) => {
-    if (err) console.error("💩 Failed to fart:", err);
-  });
+  await playSound(fartPath);
 }
 
 function printMessage(err: any) {
@@ -36,14 +60,14 @@ function printMessage(err: any) {
 }
 
 export function initShart() {
-  process.on("uncaughtException", (err) => {
-    playFart();
+  process.on("uncaughtException", async (err) => {
+    await playFart();
     printMessage(err);
     process.exit(1);
   });
 
-  process.on("unhandledRejection", (reason) => {
-    playFart();
+  process.on("unhandledRejection", async (reason) => {
+    await playFart();
     printMessage(reason);
     process.exit(1);
   });
