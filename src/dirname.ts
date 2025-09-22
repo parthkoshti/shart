@@ -1,16 +1,14 @@
-// src/utils/dirname.ts
-import path from "path";
+// dirname.ts
+import { dirname } from "path";
 import { fileURLToPath } from "url";
 
-let __dirnameShim: string;
+// Works in both ESM and CJS builds
+export const __filenameSafe =
+  typeof __filename !== "undefined"
+    ? __filename // CJS
+    : fileURLToPath(import.meta.url); // ESM
 
-if (typeof __dirname !== "undefined") {
-  // CJS build
-  __dirnameShim = __dirname;
-} else {
-  // ESM build
-  const __filename = fileURLToPath(import.meta.url);
-  __dirnameShim = path.dirname(__filename);
-}
-
-export const __dirnameSafe = __dirnameShim;
+export const __dirnameSafe =
+  typeof __dirname !== "undefined"
+    ? __dirname // CJS
+    : dirname(__filenameSafe); // ESM

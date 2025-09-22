@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "ESNext", // fine, tsup handles bundling
+    "moduleResolution": "bundler", // needed for modern resolution
     "outDir": "dist",
     "declaration": true,
+    "declarationMap": true, // (added) better TS DX
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["src", "test"]
+  "include": ["src"],
+  "exclude": ["test"] // (changed) exclude test files from build
 }
